@@ -1,0 +1,8 @@
+.friend a {
+    text-decoration: none;
+    color: dimgray;
+}
+
+.friend a.activeLink {
+    color: black;
+}

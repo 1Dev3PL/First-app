@@ -4,7 +4,7 @@ import style from './ProfileInfo.module.css';
 const ProfileInfo = (props) => {
     return (
         <div>
-            <div>
+            <div className={style.picture}>
                 <img src='https://static.makeuseof.com/wp-content/uploads/2016/09/Windows-White-Wallpaper-Featured-670x335.jpg' alt='avatar' />
             </div>
             <div className={style.info}>

@@ -8,6 +8,7 @@ import Dialogs from './components/Dialogs/Dialogs';
 import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
+import FindUsers from "./components/FindUsers/FindUsers";
 
 const App = (props) => {
     return (
@@ -15,16 +16,16 @@ const App = (props) => {
                 <Header/>
                 <Sidebar/>
                 <div className={'app-wrapper-content'}>
-                    <Route path='/dialogs'
-                           render={() => <Dialogs DialogsState={props.state.dialogs}
-                                                  dispatch={props.dispatch}/>}/>
                     <Route path='/profile'
-                           render={() => <Profile ProfileState={props.state.profile}
-                                                  dispatch={props.dispatch}/>}/>
+                           render={() => <Profile />}/>
+                    <Route path='/dialogs'
+                           render={() => <Dialogs />}/>
                     <Route path='/news'
                            render={() => <News/>}/>
                     <Route path='/music'
                            render={() => <Music/>}/>
+                    <Route path='/findusers'
+                           render={() => <FindUsers/>}/>
                     <Route path='/settings'
                            render={() => <Settings/>}/>
                 </div>

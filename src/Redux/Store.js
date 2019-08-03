@@ -10,7 +10,6 @@ let store = {
             ],
             newPostText: ''
         },
-
         dialogs: {
             friends: [
                 {name: 'Ivan', id: 1},

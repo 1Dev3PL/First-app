@@ -1,10 +1,11 @@
 import React from 'react';
 import style from './Post.module.css';
+import userPhoto from '../../../../assets/images/userPhoto.png';
 
 const Post = (props) => {
     return (
             <div className={style.item}>
-                <img src='https://labelstech.com/wp-content/uploads/2017/02/47199326-profile-pictures.png'/>
+                <img src={userPhoto}/>
                 {props.message}
                 <div>
                     {props.likes} like

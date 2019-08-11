@@ -1,12 +1,13 @@
 import React from 'react';
 import style from './User.module.css';
+import userPhoto from '../../../../assets/images/userPhoto.png';
 
 const User = (props) => {
     return (
         <div className={style.item}>
             <span>
                 <div>
-                    <img src='https://labelstech.com/wp-content/uploads/2017/02/47199326-profile-pictures.png'/>
+                    <img src={props.smallPhoto != null ? props.smallPhoto : userPhoto}/>
                 </div>
                 <div>
                     {props.followed
@@ -17,7 +18,7 @@ const User = (props) => {
             <span>
                 <span>
                     <div>
-                        {props.fullName}
+                        {props.name}
                     </div>
                     <div>
                         {props.status}
@@ -25,10 +26,10 @@ const User = (props) => {
                 </span>
                 <span>
                     <div>
-                        {props.location.country}
+                        {'props.location.country'}
                     </div>
                     <div>
-                        {props.location.city}
+                        {'props.location.city'}
                     </div>
                 </span>
             </span>

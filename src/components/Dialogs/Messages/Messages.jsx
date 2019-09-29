@@ -1,20 +1,35 @@
 import React from 'react';
 import style from './Messages.module.css';
 import Message from "./Message/Message";
+import {Field, reduxForm} from "redux-form";
+import {Textarea} from "../../Common/FormsControls/FormsControls";
+import {maxLengthCreator, required} from "../../../utils/validators/validators";
+
+const maxLength100 = maxLengthCreator(100);
+
+const AddMessageForm = (props) => {
+    return (
+        <form onSubmit={props.handleSubmit}>
+            <div>
+                <Field placeholder={'Write message'}
+                       name={'messageText'}
+                       component={Textarea} validate={[required, maxLength100]}/>
+            </div>
+            <div>
+                <button>Send</button>
+            </div>
+        </form>
+    )
+};
+
+const AddMessageReduxForm = reduxForm({form: 'addMessage'})(AddMessageForm);
 
 const Messages = (props) => {
     let messagesElements = props.messages
         .map(message => <Message message={message.message} key={message.id} id={message.id}/>);
 
-    let textArea = React.createRef();
-
-    let onAddMessage = () => {
-        props.addMessage();
-    };
-
-    let onMessageChange = () => {
-        let text = textArea.current.value;
-        props.onMessageChange(text)
+    let onAddMessage = (values) => {
+        props.sendMessage(values.messageText);
     };
 
     return (
@@ -22,17 +37,7 @@ const Messages = (props) => {
             <div>
                 {messagesElements}
             </div>
-            <div>
-                <div>
-                    <textarea ref={textArea}
-                              value={props.newMessageText}
-                              onChange={onMessageChange}
-                              placeholder='Write message'/>
-                </div>
-                <div>
-                    <button onClick={onAddMessage}>send</button>
-                </div>
-            </div>
+            <AddMessageReduxForm onSubmit={onAddMessage}/>
         </div>
     )
 };

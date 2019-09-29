@@ -1,0 +1,22 @@
+.page {
+    color: black;
+    margin: 3px;
+}
+
+.page:hover {
+    background-color: gray;
+    border-radius: 3px;
+}
+
+.selectedPage {
+    color: black;
+    text-shadow: black 0 0 2px;
+    border: solid 1px black;
+    border-radius: 3px;
+}
+
+.pageNavigation {
+    margin: 10px;
+    text-align: center;
+}
+

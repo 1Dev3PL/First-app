@@ -1,13 +1,13 @@
 import React from 'react';
 import style from './Dialogs.module.css'
-import FriendsContainer from "./Friends/FriendsContainer";
-import MessagesContainer from "./Messages/MessagesContainer";
+import Friends from "./Friends/Friends";
+import Messages from "./Messages/Messages";
 
 const Dialogs = (props) => {
     return (
         <div className={style.dialogs}>
-            <FriendsContainer />
-            <MessagesContainer />
+            <Friends friends={props.friends}/>
+            <Messages messages={props.messages} sendMessage={props.sendMessage}/>
         </div>
     )
 };

@@ -16,7 +16,7 @@ const AddPostForm = (props) => {
                        component={Textarea} validate={[required, maxLength50]}/>
             </div>
             <div>
-                <button>Add Post</button>
+                <button className={style.addPostButton}>Add Post</button>
             </div>
         </form>
     )

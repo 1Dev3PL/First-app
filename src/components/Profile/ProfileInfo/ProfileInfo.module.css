@@ -1,9 +1,14 @@
 .picture {
-
+    width: 150px;
 }
 
 .info {
     padding: 10px;
     border: solid 2px #373737;
     border-radius: 10px;
+}
+
+.nickName {
+    font-size: 30px;
+    font-weight: bold;
 }

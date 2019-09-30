@@ -1,5 +1,10 @@
 .item {
+    padding: 4px;
     color: black;
+    margin-top: 5px;
+    border: #373737 2px solid;
+    border-radius: 6px;
+    display: table;
 }
 
 .item img {

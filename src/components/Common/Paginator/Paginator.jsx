@@ -21,7 +21,7 @@ let Paginator = ({totalItemsCount, pageSize, currentPage, onPageChanged, onPrevi
                     return (
                         <span onClick={() => {onPageChanged(page)}}
                               className={currentPage === page ? style.selectedPage : style.page}>
-                            {page}
+                            {page + ' '}
                         </span>)
                 })}
             </div>

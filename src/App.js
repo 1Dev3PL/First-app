@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter, Route, withRouter} from 'react-router-dom';
+import {HashRouter, Route, withRouter} from 'react-router-dom';
 import './App.css';
 import Sidebar from './components/Sidebar/Sidebar';
 import News from './components/News/News';
@@ -63,11 +63,11 @@ let AppContainer =
 
 const MainApp = (props) => {
     return (
-        <BrowserRouter>
+        <HashRouter>
             <Provider store={store}>
                 <AppContainer/>
             </Provider>
-        </BrowserRouter>
+        </HashRouter>
     )
 };
 

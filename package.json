@@ -2,7 +2,7 @@
   "name": "first-app",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://1Dev3PL.github.io/First-app",
+  "homepage": "https://1dev3pl.github.io/First-app/",
   "dependencies": {
     "axios": "^0.19.0",
     "react": "^16.8.6",

@@ -1,6 +1,5 @@
 import React from 'react';
 import User from './User/User';
-import style from './Users.module.css';
 import Paginator from "../Common/Paginator/Paginator";
 
 let Users = (props) => {

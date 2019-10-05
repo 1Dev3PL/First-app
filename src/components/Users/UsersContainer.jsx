@@ -44,7 +44,7 @@ class UsersContainer extends React.Component {
 
     render() {
         return (
-            <>
+            <div>
                 {this.props.isFetching ? <Preloader/> : null}
                 <Users users={this.props.users}
                        totalUsersCount={this.props.totalUsersCount}
@@ -57,7 +57,7 @@ class UsersContainer extends React.Component {
                        toggleFollowingProgress={this.props.toggleFollowingProgress}
                        follow={this.props.follow}
                        unfollow={this.props.unfollow}/>
-            </>
+            </div>
         )
     }
 }

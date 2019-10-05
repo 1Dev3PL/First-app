@@ -19,7 +19,7 @@ let Paginator = ({totalItemsCount, pageSize, currentPage, onPageChanged, onPrevi
             <div className={style.pageNavigation}>
                 {pages.map(page => {
                     return (
-                        <span onClick={() => {onPageChanged(page)}}
+                        <span key={page} onClick={() => {onPageChanged(page)}}
                               className={currentPage === page ? style.selectedPage : style.page}>
                             {page + ' '}
                         </span>)

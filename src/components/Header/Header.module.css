@@ -15,7 +15,7 @@
 
 .loginBlock a {
     text-decoration: none;
-    color: #373737;
+    color: black;
 }
 
 .loginBlock a.activeLink {

@@ -1,8 +1,22 @@
 import React from 'react';
 import style from './Paginator.module.css';
 
-let Paginator = ({totalItemsCount, pageSize, currentPage, onPageChanged, onPreviousButtonPressed, onNextButtonPressed}) => {
-    let pages = [];
+type PropsType = {
+    totalItemsCount: number
+    pageSize: number
+    currentPage: number
+    onPageChanged: (page: number) => void
+    onPreviousButtonPressed: () => void
+    onNextButtonPressed: () => void
+}
+
+let Paginator: React.FC<PropsType> = ({totalItemsCount,
+                                      pageSize,
+                                      currentPage,
+                                      onPageChanged,
+                                      onPreviousButtonPressed,
+                                      onNextButtonPressed}) => {
+    let pages: Array<number> = [];
     let pagesCount = Math.ceil(totalItemsCount / pageSize);
 
     for (let i = 1; i <= pagesCount; i++) {

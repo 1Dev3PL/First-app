@@ -1,5 +1,5 @@
 import React from 'react';
-import {HashRouter, Route, withRouter} from 'react-router-dom';
+import {HashRouter, Redirect, Route, Switch, withRouter} from 'react-router-dom';
 import './App.css';
 import Sidebar from './components/Sidebar/Sidebar';
 import News from './components/News/News';
@@ -14,12 +14,22 @@ import Preloader from './components/Common/Preloader/Preloader';
 import store from './Redux/redux-store';
 import UsersContainer from './components/Users/UsersContainer';
 import withSuspense from "./hoc/withSuspense";
+
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
 
 class App extends React.Component {
+    catchAllUnhandledErrors = (reason, promise) => {
+        alert('Some error occured')
+    };
+
     componentDidMount() {
         this.props.initializeApp();
+        window.addEventListener('unhandledrejection', this.catchAllUnhandledErrors);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('unhandledrejection', this.catchAllUnhandledErrors);
     }
 
     render() {
@@ -32,20 +42,27 @@ class App extends React.Component {
                 <HeaderContainer/>
                 <Sidebar/>
                 <div className={'app-wrapper-content'}>
-                    <Route path='/profile/:userId?'
-                           render={withSuspense(ProfileContainer)}/>
-                    <Route path='/dialogs'
-                           render={withSuspense(DialogsContainer)}/>
-                    <Route path='/news'
-                           render={() => <News/>}/>
-                    <Route path='/users'
-                           render={() => <UsersContainer/>}/>
-                    <Route path='/music'
-                           render={() => <Music/>}/>
-                    <Route path='/settings'
-                           render={() => <Settings/>}/>
-                    <Route path='/login'
-                           render={() => <LoginPage/>}/>
+                    {/*для того чтобы рендерилось только крогда url полностью совпадает*/}
+                    <Switch>
+                        <Route exact path='/'
+                               render={() => <Redirect to={'/profile'}/>}/>
+                        <Route path='/profile/:userId?'
+                               render={withSuspense(ProfileContainer)}/>
+                        <Route path='/dialogs'
+                               render={withSuspense(DialogsContainer)}/>
+                        <Route path='/news'
+                               render={() => <News/>}/>
+                        <Route path='/users'
+                               render={() => <UsersContainer title='Users'/>}/>
+                        <Route path='/music'
+                               render={() => <Music/>}/>
+                        <Route path='/settings'
+                               render={() => <Settings/>}/>
+                        <Route path='/login'
+                               render={() => <LoginPage/>}/>
+                        <Route path='*'
+                               render={() => <div>404 NOT FOUND</div>}/>
+                    </Switch>
                 </div>
             </div>
         )
@@ -61,7 +78,7 @@ let AppContainer =
         withRouter,
         connect(mapStateToProps, {initializeApp}))(App);
 
-const MainApp = (props) => {
+const MainApp = () => {
     return (
         <HashRouter>
             <Provider store={store}>

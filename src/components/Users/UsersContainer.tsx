@@ -24,20 +24,20 @@ import {UserType} from "../../types/types";
 import {AppStateType} from "../../Redux/redux-store";
 
 type MapStatePropsType = {
-    currentPage: number;
-    pageSize: number;
-    isFetching: boolean;
-    totalUsersCount: number;
-    followingInProgress: Array<number>;
-    users: Array<UserType>;
+    currentPage: number
+    pageSize: number
+    isFetching: boolean
+    totalUsersCount: number
+    followingInProgress: Array<number>
+    users: Array<UserType>
 }
 type MapDispatchPropsType = {
-    getUsers: (currentPage: number, pageSize: number) => void;
-    changePage: (pageNumber: number) => void;
-    nextPage: () => void;
-    previousPage: () => void;
-    follow: (userId: number) => void;
-    unfollow: (userId: number) => void;
+    getUsers: (currentPage: number, pageSize: number) => void
+    changePage: (pageNumber: number) => void
+    nextPage: () => void
+    previousPage: () => void
+    follow: (userId: number) => void
+    unfollow: (userId: number) => void
 }
 type OwnPropsType = {
     title: string

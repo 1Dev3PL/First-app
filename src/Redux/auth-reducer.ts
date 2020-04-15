@@ -1,5 +1,7 @@
-import {authAPI, securityAPI} from '../api/api';
-import { stopSubmit } from 'redux-form';
+import {authAPI, ResultCodeForCaptcha, ResultCodes, securityAPI} from '../api/api';
+import {stopSubmit} from 'redux-form';
+import {ThunkAction} from "redux-thunk";
+import {AppStateType} from "./redux-store";
 
 const SET_AUTH_USER_DATA = 'auth/SET-AUTH-USER-DATA';
 const GET_CAPTCHA_URL_SUCCESS = 'auth/GET-CAPTCHA-URL-SUCCESS';
@@ -40,59 +42,59 @@ type SetAuthUserDataActionType = {
     type: typeof SET_AUTH_USER_DATA;
     payload: SetAuthUserDataPayloadActionType;
 }
-
-const setAuthUserData = (userId: number | null, email: string | null, login: string | null, isAuth: boolean): SetAuthUserDataActionType => ({
-    type: SET_AUTH_USER_DATA, payload:
-        {userId, email, login, isAuth}
-});
-
 type getCaptchaUrlSuccessActionType = {
     type: typeof GET_CAPTCHA_URL_SUCCESS;
     payload: {
         captchaUrl: string;
     }
 }
+type ActionsTypes = SetAuthUserDataActionType | getCaptchaUrlSuccessActionType
+
+const setAuthUserData = (userId: number | null, email: string | null, login: string | null, isAuth: boolean): SetAuthUserDataActionType => ({
+    type: SET_AUTH_USER_DATA, payload:
+        {userId, email, login, isAuth}
+});
 
 const getCaptchaUrlSuccess = (captchaUrl: string): getCaptchaUrlSuccessActionType => ({
     type: GET_CAPTCHA_URL_SUCCESS, payload: {captchaUrl}
 });
 
-export const getAuthUserData = () => async (dispatch: any) => {
-    let response = await authAPI.me();
+type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
 
-    if (response.data.resultCode === 0) {
-        let {id, email, login} = response.data.data;
+export const getAuthUserData = (): ThunkType => async (dispatch) => {
+    let data = await authAPI.me();
+
+    if (data.resultCode === ResultCodes.Success) {
+        let {id, email, login} = data.data;
         dispatch(setAuthUserData(id, email, login, true))
     }
 };
 
-
 export const login = (email: string, password: string, rememberMe: boolean, captcha: string) => async (dispatch: any) => {
-    let response = await authAPI.login(email, password, rememberMe, captcha);
+    let data = await authAPI.login(email, password, rememberMe, captcha);
 
-    if (response.data.resultCode === 0) {
+    if (data.resultCode === ResultCodes.Success) {
         dispatch(getAuthUserData())
     } else {
-        if (response.data.resultCode === 10) {
+        if (data.resultCode === ResultCodeForCaptcha.CaptchaIsRequired) {
             dispatch(getCaptchaUrl())
         }
-        let message = response.data.messages.length > 0
-            ? response.data.messages[0]
+        let message = data.messages.length > 0
+            ? data.messages[0]
             : 'Error';
         dispatch(stopSubmit('login', {_error: message}))
     }
 };
 
+export const logout = (): ThunkType => async (dispatch) => {
+    let data = await authAPI.logout();
 
-export const logout = () => async (dispatch: any) => {
-    let response = await authAPI.logout();
-
-    if (response.data.resultCode === 0) {
+    if (data.resultCode === 0) {
         dispatch(setAuthUserData(null, null, null, false))
     }
 };
 
-export const getCaptchaUrl = () => async (dispatch: any) => {
+export const getCaptchaUrl = (): ThunkType => async (dispatch) => {
     let response = await securityAPI.getCaptchaUrl();
 
     dispatch(getCaptchaUrlSuccess(response.data.url))

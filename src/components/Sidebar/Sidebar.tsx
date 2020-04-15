@@ -2,7 +2,9 @@ import React from 'react';
 import style from './Sidebar.module.css';
 import {NavLink} from 'react-router-dom';
 
-const Sidebar = (props) => {
+type PropsType = {}
+
+const Sidebar: React.FC<PropsType> = (props) => {
     return (
     <nav className={style.sidebar}>
         <div className={style.item} >

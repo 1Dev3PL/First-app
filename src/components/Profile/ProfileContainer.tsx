@@ -5,8 +5,25 @@ import {getUserProfile, getUserStatus, savePhoto, saveProfile, updateUserStatus}
 import {withRouter} from "react-router-dom";
 import withAuthRedirect from "../../hoc/withAuthRedirect";
 import {compose} from "redux";
+import { ProfileType } from '../../types/types';
+import {AppStateType} from "../../Redux/redux-store";
 
-class ProfileContainer extends React.Component{
+type MapStatePropsType = {
+    profile: ProfileType | null
+    status: string
+    myId: number | null
+    isAuth: boolean
+}
+type MapDispatchPropsType = {
+    getUserProfile: (userId: number) => void
+    getUserStatus: (userId: number) => void
+    updateUserStatus: (status: string) => void
+    savePhoto: (photo: any) => void
+    saveProfile: (profile: ProfileType) => void
+}
+type PropsType = MapStatePropsType & MapDispatchPropsType
+
+class ProfileContainer extends React.Component<PropsType>{
     refreshProfile () {
         let userId = this.props.match.params.userId;
         if(!userId) {
@@ -23,7 +40,7 @@ class ProfileContainer extends React.Component{
         this.refreshProfile()
     }
 
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(prevProps: PropsType, prevState: MapStatePropsType) {
         if (this.props.match.params.userId !== prevProps.match.params.userId) {
             this.refreshProfile()
         }
@@ -33,7 +50,7 @@ class ProfileContainer extends React.Component{
         return (
             <div>
                 <Profile {...this.props}
-                         profie={this.props.profile}
+                         profile={this.props.profile}
                          status={this.props.status}
                          updateStatus={this.props.updateUserStatus}
                          isOwner={!this.props.match.params.userId}
@@ -44,7 +61,7 @@ class ProfileContainer extends React.Component{
     }
 }
 
-let mapStateToProps = (state) => {
+let mapStateToProps = (state: AppStateType): MapStatePropsType => {
     return {
         profile: state.profile.profile,
         status: state.profile.status,

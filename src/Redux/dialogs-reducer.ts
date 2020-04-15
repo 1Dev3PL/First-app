@@ -1,13 +1,8 @@
+import { FriendType, MessageType } from "../types/types";
+
 const SEND_MESSAGE = 'dialogs/SEND-MESSAGE';
 
-type DialogType = {
-    id: number;
-    name: string;
-}
-type MessageType = {
-    id: number;
-    message: string;
-}
+
 
 let initialState = {
     friends: [
@@ -15,7 +10,7 @@ let initialState = {
         {name: 'Dima', id: 2},
         {name: 'Lena', id: 3},
         {name: 'Ilia', id: 4},
-    ] as Array<DialogType>,
+    ] as Array<FriendType>,
     messages: [
         {message: 'Hello', id: 1},
         {message: 'Lol', id: 2},

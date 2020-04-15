@@ -3,8 +3,10 @@ import style from './ProfileInfo.module.css';
 import userPhoto from '../../../assets/images/userPhoto.png';
 import ProfileStatusWithHooks from "./ProfileStatusWithHooks";
 import ProfileDataForm from "./ProfileDataForm";
+import {PropsType} from "../Profile";
+import {ProfileType} from "../../../types/types";
 
-const ProfileInfo = ({profile, status, updateStatus, isOwner, savePhoto, saveProfile}) => {
+const ProfileInfo: React.FC<PropsType> = ({profile, status, updateStatus, isOwner, savePhoto, saveProfile}) => {
     let [editMode, setEditMode] = useState(false);
 
     const onMainPhotoSelected = (e) => {
@@ -39,7 +41,14 @@ const ProfileInfo = ({profile, status, updateStatus, isOwner, savePhoto, savePro
         </div>
     )
 };
-const ProfileData = ({profile, isOwner, toEditMode}) => {
+
+type ProfileDataPropsType = {
+    profile: ProfileType | null
+    isOwner:
+    toEditMode: () => void
+}
+
+const ProfileData: React.FC<ProfileDataPropsType> = ({profile, isOwner, toEditMode}) => {
     return (
         <div>
             {isOwner &&

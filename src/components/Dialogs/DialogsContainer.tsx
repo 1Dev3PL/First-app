@@ -4,8 +4,23 @@ import {sendMessage} from "../../Redux/dialogs-reducer";
 import Dialogs from "./Dialogs";
 import withAuthRedirect from "../../hoc/withAuthRedirect";
 import {compose} from "redux";
+import {FriendType, MessageType} from "../../types/types";
+import {AppStateType} from "../../Redux/redux-store";
 
-class DialogsContainer extends React.Component {
+type MapStatePropsType = {
+    friends: Array<FriendType>
+    messages: Array<MessageType>
+    isAuth: boolean
+}
+type MapDispatchPropsType = {
+    sendMessage: (messageText: string) => void
+}
+type OwnPropsType = {
+
+}
+type PropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType
+
+class DialogsContainer extends React.Component<PropsType> {
     render() {
         return (
             <div>
@@ -18,7 +33,7 @@ class DialogsContainer extends React.Component {
     }
 }
 
-let mapStateToProps = (state) => {
+let mapStateToProps = (state: AppStateType): MapStatePropsType => {
     return {
         friends: state.dialogs.friends,
         messages: state.dialogs.messages,
@@ -27,6 +42,6 @@ let mapStateToProps = (state) => {
 };
 
 export default compose(
-    connect(mapStateToProps, {sendMessage}),
+    connect<MapStatePropsType, MapDispatchPropsType, OwnPropsType, AppStateType>(mapStateToProps, {sendMessage}),
     withAuthRedirect
 )(DialogsContainer);

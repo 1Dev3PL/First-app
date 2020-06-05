@@ -70,6 +70,8 @@ let mapStateToProps = (state: AppStateType): MapStatePropsType => {
     }
 };
 
+const { } =
+
 export default compose(
     connect(mapStateToProps, {getUserProfile, getUserStatus, updateUserStatus, savePhoto, saveProfile}),
     withRouter,

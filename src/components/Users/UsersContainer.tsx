@@ -1,10 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {
-    changePage,
+    usersActions,
     follow,
-    nextPage,
-    previousPage,
     unfollow,
     requestUsers
 } from '../../Redux/users-reducer';
@@ -94,6 +92,8 @@ let mapStateToProps = (state: AppStateType): MapStatePropsType => {
         followingInProgress: getFollowingInProgress(state)
     };
 };
+//Здесь чёт стрёмно нужно разузнать получше
+const { nextPage, previousPage, changePage} = usersActions;
 
 export default compose(
     //TStateProps = {}, TDispatchProps = {}, TOwnProps = {}, State = DefaultRootState

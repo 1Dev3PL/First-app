@@ -4,7 +4,7 @@ import ProfileStatus from "./ProfileStatus";
 
 describe('ProfileStatus component', () => {
     test('status in props should be in the state', () => {
-        const component = create(<ProfileStatus status='there is status' />);
+        const component = create(<ProfileStatus status='there is status'/>);
         const instance = component.getInstance();
         expect(instance.state.status).toBe('there is status');
     });

@@ -37,10 +37,8 @@ type MapDispatchPropsType = {
     follow: (userId: number) => void
     unfollow: (userId: number) => void
 }
-type OwnPropsType = {
-    title: string
-}
-type PropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType
+
+type PropsType = MapStatePropsType & MapDispatchPropsType
 
 class UsersContainer extends React.Component<PropsType> {
     componentDidMount() {
@@ -65,18 +63,17 @@ class UsersContainer extends React.Component<PropsType> {
     render() {
         return (
             <div>
-                <h1>{this.props.title}</h1>
-                {this.props.isFetching ? <Preloader/> : null}
-                <Users users={this.props.users}
-                       totalUsersCount={this.props.totalUsersCount}
-                       pageSize={this.props.pageSize}
-                       currentPage={this.props.currentPage}
-                       followingInProgress={this.props.followingInProgress}
-                       onNextButtonPressed={this.onNextButtonPressed}
-                       onPreviousButtonPressed={this.onPreviousButtonPressed}
-                       onPageChanged={this.onPageChanged}
-                       follow={this.props.follow}
-                       unfollow={this.props.unfollow}/>
+                {this.props.isFetching ? <Preloader/> :
+                    <Users users={this.props.users}
+                           totalUsersCount={this.props.totalUsersCount}
+                           pageSize={this.props.pageSize}
+                           currentPage={this.props.currentPage}
+                           followingInProgress={this.props.followingInProgress}
+                           onNextButtonPressed={this.onNextButtonPressed}
+                           onPreviousButtonPressed={this.onPreviousButtonPressed}
+                           onPageChanged={this.onPageChanged}
+                           follow={this.props.follow}
+                           unfollow={this.props.unfollow}/>}
             </div>
         )
     }
@@ -93,11 +90,11 @@ let mapStateToProps = (state: AppStateType): MapStatePropsType => {
     };
 };
 //Здесь чёт стрёмно нужно разузнать получше
-const { nextPage, previousPage, changePage} = usersActions;
+const {nextPage, previousPage, changePage} = usersActions;
 
-export default compose(
+export default compose<React.ComponentType>(
     //TStateProps = {}, TDispatchProps = {}, TOwnProps = {}, State = DefaultRootState
-    connect<MapStatePropsType, MapDispatchPropsType, OwnPropsType, AppStateType>(mapStateToProps, {
+    connect<MapStatePropsType, MapDispatchPropsType, {}, AppStateType>(mapStateToProps, {
         follow, unfollow, nextPage, previousPage, changePage, getUsers: requestUsers
     }),
     withAuthRedirect

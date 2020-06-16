@@ -5,7 +5,6 @@ import Messages from "./Messages/Messages";
 import {FriendType, MessageType} from "../../types/types";
 
 type PropsType = {
-    isAuth: boolean
     friends: Array<FriendType>
     messages: Array<MessageType>
     sendMessage: (messageText: string) => void

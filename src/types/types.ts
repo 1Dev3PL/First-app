@@ -1,5 +1,3 @@
-import {ResultCodes} from "../api/api";
-
 export type PostType = {
     message: string
     likesCount: number
@@ -42,9 +40,4 @@ export type FriendType = {
 export type MessageType = {
     id: number
     message: string
-}
-export type ResponseType = {
-    resultCode: ResultCodes
-    messages: Array<string>
-    data: {}
 }

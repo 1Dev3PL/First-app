@@ -2,12 +2,7 @@ import React from 'react';
 import style from './Header.module.css';
 import logo from '../../assets/images/logo.png';
 import {NavLink} from "react-router-dom";
-
-type PropsType = {
-    isAuth: boolean
-    login: string | null
-    logout: () => void
-}
+import {PropsType} from "./HeaderContainer";
 
 const Header: React.FC<PropsType> = (props) => {
     return (

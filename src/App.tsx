@@ -11,15 +11,26 @@ import {connect, Provider} from 'react-redux';
 import {compose} from 'redux';
 import {initializeApp} from './Redux/app-reducer';
 import Preloader from './components/Common/Preloader/Preloader';
-import store from './Redux/redux-store';
+import store, {AppStateType} from './Redux/redux-store';
 import UsersContainer from './components/Users/UsersContainer';
 import withSuspense from "./hoc/withSuspense";
 
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
 
-class App extends React.Component {
-    catchAllUnhandledErrors = (reason, promise) => {
+const SuspendedProfile = withSuspense(ProfileContainer)
+const SuspendedDialogs = withSuspense(DialogsContainer)
+
+type MapStatePropsType = {
+    initialized: boolean
+}
+type MapDispatchPropsType = {
+    initializeApp:() => void
+}
+type PropsType = MapStatePropsType & MapDispatchPropsType
+
+class App extends React.Component<PropsType> {
+    catchAllUnhandledErrors = (e: PromiseRejectionEvent) => {
         alert('Some error occured')
     };
 
@@ -46,14 +57,15 @@ class App extends React.Component {
                     <Switch>
                         <Route exact path='/'
                                render={() => <Redirect to={'/profile'}/>}/>
+                        {/*В стрeлочных функциях чтоб рендеровские пропсы не шли в withSuspense*/}
                         <Route path='/profile/:userId?'
-                               render={withSuspense(ProfileContainer)}/>
+                               render={() => <SuspendedProfile /> }/>
                         <Route path='/dialogs'
-                               render={withSuspense(DialogsContainer)}/>
+                               render={() => <SuspendedDialogs />}/>
                         <Route path='/news'
                                render={() => <News/>}/>
                         <Route path='/users'
-                               render={() => <UsersContainer title='Users'/>}/>
+                               render={() => <UsersContainer />}/>
                         <Route path='/music'
                                render={() => <Music/>}/>
                         <Route path='/settings'
@@ -69,16 +81,16 @@ class App extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: AppStateType): MapStatePropsType => ({
     initialized: state.app.initialized
 });
 
 let AppContainer =
-    compose(
+    compose<React.ComponentType>(
         withRouter,
         connect(mapStateToProps, {initializeApp}))(App);
 
-const MainApp = () => {
+const MainApp: React.FC = () => {
     return (
         <HashRouter>
             <Provider store={store}>

@@ -8,9 +8,9 @@ export type PropsType = {
     profile: ProfileType | null
     status: string
     updateStatus: (status: string) => void
-    isOwner:
-    savePhoto: (photo: any) => void
-    saveProfile: (profile: ProfileType) => void
+    isOwner: boolean
+    savePhoto: (photo: File) => void
+    saveProfile: (profile: ProfileType) => Promise<any>
 }
 
 const Profile: React.FC<PropsType> = (props) => {

@@ -2,7 +2,13 @@ import React from 'react';
 import style from './Post.module.css';
 import userPhoto from '../../../../assets/images/userPhoto.png';
 
-const Post = (props) => {
+type PropsType = {
+    message: string
+    likes: number
+    id: number
+}
+
+const Post: React.FC<PropsType> = (props) => {
     return (
             <div className={style.item}>
                 <img src={userPhoto} alt={'userPhoto'}/>

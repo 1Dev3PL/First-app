@@ -1,34 +1,22 @@
-import {instance, ResultCodeForCaptcha, ResultCodes} from "./api";
+import {instance, ResultCodeForCaptcha, ResultCodes, APIResponseType} from "./api";
 
-type MeResponseType = {
-    data: {
-        id: number
-        email: string
-        login: string
-    }
-    resultCode: ResultCodes
-    messages: Array<string>
+type MeResponseDataType = {
+    id: number
+    email: string
+    login: string
 }
-type LoginResponseType = {
-    resultCode: ResultCodes | ResultCodeForCaptcha
-    messages: Array<string>
-    data: {
-        userId: number
-    }
-}
-type LogoutResponseType = {
-    resultCode: ResultCodes
-    messages: Array<string>
-    data: {}
+
+type LoginResponseDataType = {
+    userId: number
 }
 
 export const authAPI = {
     me() {
-        return instance.get<MeResponseType>(`auth/me`).then(response => response.data)
+        return instance.get<APIResponseType<MeResponseDataType>>(`auth/me`).then(response => response.data)
     },
 
     login(email: string, password: string, rememberMe = false, captcha: null | string = null) {
-        return instance.post<LoginResponseType>(`auth/login`, {
+        return instance.post<APIResponseType<LoginResponseDataType, ResultCodes | ResultCodeForCaptcha>>(`auth/login`, {
             email,
             password,
             rememberMe,
@@ -37,6 +25,6 @@ export const authAPI = {
     },
 
     logout() {
-        return instance.delete<LogoutResponseType>(`auth/login`).then(response => response.data)
+        return instance.delete(`auth/login`).then(response => response.data) as Promise<APIResponseType>
     }
 };

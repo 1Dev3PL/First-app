@@ -11,16 +11,25 @@ import {AppStateType} from "../../Redux/redux-store";
 type LoginFormOwnPropsType = {
     captchaUrl: string | null
 }
+export type LoginFormValuesType = {
+    email: string
+    password: string
+    rememberMe: boolean
+    captcha: string
+}
+type LoginFormValuesKeysType = Extract<keyof LoginFormValuesType, string>
 
-const LoginForm: React.FC<InjectedFormProps<LoginFormValuesType, LoginFormOwnPropsType> & LoginFormOwnPropsType> = ({handleSubmit, error, captchaUrl}) => {
+const LoginForm: React.FC<InjectedFormProps<LoginFormValuesType, LoginFormOwnPropsType> & LoginFormOwnPropsType> = (
+    {handleSubmit, error, captchaUrl}) => {
     return (
         <form onSubmit={handleSubmit}>
-            {createField<LoginFormValuesTypeKeys>('Email', 'email', Input, [required])}
-            {createField<LoginFormValuesTypeKeys>('Password', 'password', Input, [required], 'password')}
-            {createField<LoginFormValuesTypeKeys>(undefined, 'rememberMe', Input, null, 'checkbox', 'Remember Me')}
+            {createField<LoginFormValuesKeysType>('Email', 'email', Input, [required])}
+            {createField<LoginFormValuesKeysType>('Password', 'password', Input, [required], 'password')}
+            {createField<LoginFormValuesKeysType>(undefined, 'rememberMe', Input, null,
+                'checkbox', 'Remember Me')}
 
             {captchaUrl && <img src={captchaUrl} alt={'Oops('}/>}
-            {captchaUrl && createField<LoginFormValuesTypeKeys>('Captcha', 'captcha', Input, [required])}
+            {captchaUrl && createField<LoginFormValuesKeysType>('Captcha', 'captcha', Input, [required])}
 
             {error &&
             <div className={style.formSummaryError}>
@@ -43,15 +52,7 @@ type MapDispatchPropsType = {
     login: (email: string, password: string, rememberMe: boolean, captcha: string) => void
     logout: () => void
 }
-type OwnPropsType = {}
-type PropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType
-export type LoginFormValuesType = {
-    email: string
-    password: string
-    rememberMe: boolean
-    captcha: string
-}
-type LoginFormValuesTypeKeys = Extract<keyof LoginFormValuesType, string>
+type PropsType = MapStatePropsType & MapDispatchPropsType
 
 const LoginPage: React.FC<PropsType> = (props) => {
     const onSubmit = (formData: LoginFormValuesType) => {
@@ -77,4 +78,5 @@ let mapStateToProps = (state: AppStateType): MapStatePropsType => {
     }
 };
 
-export default connect<MapStatePropsType, MapDispatchPropsType, OwnPropsType, AppStateType>(mapStateToProps, {login, logout})(LoginPage);
+export default connect<MapStatePropsType, MapDispatchPropsType, {}, AppStateType>
+(mapStateToProps, {login, logout})(LoginPage);

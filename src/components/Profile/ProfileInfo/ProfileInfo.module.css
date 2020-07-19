@@ -3,9 +3,9 @@
 }
 
 .info {
+    background-color: lightgray;
     padding: 10px;
-    border: solid 2px #373737;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 .fullName {

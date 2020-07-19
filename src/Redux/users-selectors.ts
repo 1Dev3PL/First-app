@@ -16,6 +16,11 @@ export const getPageSize = (state: AppStateType) => {
         state.users.pageSize
     )
 };
+export const getPortionSize = (state: AppStateType) => {
+    return(
+        state.users.portionSize
+    )
+};
 export const getTotalUsersCount = (state: AppStateType) => {
     return(
         state.users.totalUsersCount
@@ -24,6 +29,11 @@ export const getTotalUsersCount = (state: AppStateType) => {
 export const getCurrentPage = (state: AppStateType) => {
     return(
         state.users.currentPage
+    )
+};
+export const getUsersFilter = (state: AppStateType) => {
+    return(
+        state.users.filter
     )
 };
 export const getIsFetching = (state: AppStateType) => {

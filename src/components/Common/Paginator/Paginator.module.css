@@ -1,6 +1,7 @@
 .page {
     color: black;
     margin: 3px;
+    padding: 2px
 }
 
 .page:hover {
@@ -11,13 +12,23 @@
 .selectedPage {
     background-color: #ffe86f;
     color: black;
-    text-shadow: black 0 0 2px;
+    font-weight: bold;
     border: solid 1px black;
     border-radius: 3px;
+    padding: 2px
 }
 
 .pageNavigation {
     margin: 10px;
     text-align: center;
+}
+
+.pageNavigationLayer {
+    display: inline-block;
+    margin: 2.5px;
+}
+
+.pageNavigationLayer button {
+    margin: 2.5px;
 }
 

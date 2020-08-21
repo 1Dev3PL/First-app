@@ -53,7 +53,7 @@ export const getAuthUserData = (): ThunkType => async (dispatch) => {
     }
 };
 
-export const login = (email: string, password: string, rememberMe: boolean, captcha: string): ThunkType => async (dispatch) => {
+export const logIn = (email: string, password: string, rememberMe: boolean, captcha: string): ThunkType => async (dispatch) => {
     let data = await authAPI.login(email, password, rememberMe, captcha);
 
     if (data.resultCode === ResultCodes.Success) {
@@ -69,10 +69,11 @@ export const login = (email: string, password: string, rememberMe: boolean, capt
     }
 };
 
-export const logout = (): ThunkType => async (dispatch) => {
+export const logOut = (): ThunkType => async (dispatch) => {
     let data = await authAPI.logout();
 
     if (data.resultCode === 0) {
+
         dispatch(authActions.setAuthUserData(null, null, null, false))
     }
 };

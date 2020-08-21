@@ -34,6 +34,7 @@ let Paginator: React.FC<PropsType> = ({
 
     return (
         <div className={style.pageNavigation}>
+            {portionsCount > 0 &&
             <div>
                 <div className={style.pageNavigationLayer}>
                     <button onClick={() => {
@@ -46,7 +47,7 @@ let Paginator: React.FC<PropsType> = ({
                     }}>Туда
                     </button>
                 </div>
-            </div>
+            </div>}
             <div>
                 <div className={style.pageNavigationLayer}>
                     {currentPortion > 1 && <button onClick={() => {

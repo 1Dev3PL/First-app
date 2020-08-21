@@ -3,6 +3,7 @@ import style from './Messages.module.css';
 import Message from "./Message/Message";
 import {MessageType} from "../../../types/types";
 import AddMessageReduxForm, { NewMessageFormValuesType } from '../AddMessageForm/AddMessageForm';
+import AddMessageNewForm from "../AddMessageForm/AddMessageNewForm";
 
 type PropsType = {
     messages: Array<MessageType>
@@ -22,7 +23,8 @@ const Messages: React.FC<PropsType> = (props) => {
             <div>
                 {messagesElements}
             </div>
-            <AddMessageReduxForm onSubmit={onAddMessage}/>
+            {/*<AddMessageReduxForm onSubmit={onAddMessage}/>*/}
+            <AddMessageNewForm sendMessage={props.sendMessage}/>
         </div>
     )
 };

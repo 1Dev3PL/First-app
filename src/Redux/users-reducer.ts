@@ -44,16 +44,6 @@ const usersReducer = (state = initialState, action: ActionsTypes): InitialStateT
                     {followed: false}
                 )
             };
-        case 'DS/USERS/NEXT_PAGE':
-            return {
-                ...state,
-                currentPage: state.currentPage + 1
-            };
-        case 'DS/USERS/PREVIOUS_PAGE':
-            return {
-                ...state,
-                currentPage: state.currentPage - 1
-            };
         case 'DS/USERS/CHANGE_PAGE':
             return {
                 ...state,
@@ -98,8 +88,6 @@ type ActionsTypes = InferActionsTypes<typeof usersActions>
 export const usersActions = {
     followSuccess: (userId: number) => ({type: 'DS/USERS/FOLLOW', userId} as const),
     unfollowSuccess: (userId: number) => ({type: 'DS/USERS/UNFOLLOW', userId} as const),
-    nextPage: () => ({type: 'DS/USERS/NEXT_PAGE'} as const),
-    previousPage: () => ({type: 'DS/USERS/PREVIOUS_PAGE'} as const),
     changePage: (pageNumber: number) => ({type: 'DS/USERS/CHANGE_PAGE', pageNumber} as const),
     setUsers: (users: Array<UserType>) => ({type: 'DS/USERS/SET_USERS', users} as const),
     setFilter: (filter: FilterType) => ({type: 'DS/USERS/SET_FILTER', payload: filter} as const),

@@ -9,7 +9,7 @@ type PropsType = {
     unfollow: (userId: number) => void
 }
 
-let Users: React.FC<PropsType> = ({users, ...props}) => {
+const Users: React.FC<PropsType> = ({users, ...props}) => {
     let usersElements = users
         .map(user => <User id={user.id}
                            name={user.name}

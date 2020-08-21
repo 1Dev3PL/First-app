@@ -5,14 +5,14 @@ import Sidebar from './components/Sidebar/Sidebar';
 import News from './components/News/News';
 import Music from './components/Music/Music';
 import Settings from './components/Settings/Settings';
-import HeaderContainer from './components/Header/HeaderContainer';
+import Header from './components/Header/Header';
 import LoginPage from './components/Login/Login';
 import {connect, Provider} from 'react-redux';
 import {compose} from 'redux';
 import {initializeApp} from './Redux/app-reducer';
 import Preloader from './components/Common/Preloader/Preloader';
 import store, {AppStateType} from './Redux/redux-store';
-import UsersContainer from './components/Users/UsersContainer';
+import UsersPage from './components/Users/UsersContainer';
 import withSuspense from "./hoc/withSuspense";
 
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
@@ -31,7 +31,7 @@ type PropsType = MapStatePropsType & MapDispatchPropsType
 
 class App extends React.Component<PropsType> {
     catchAllUnhandledErrors = (e: PromiseRejectionEvent) => {
-        alert('Some error occured')
+        alert('Some error occurred')
     };
 
     componentDidMount() {
@@ -50,14 +50,14 @@ class App extends React.Component<PropsType> {
 
         return (
             <div className={'app-wrapper'}>
-                <HeaderContainer/>
+                <Header/>
                 <Sidebar/>
                 <div className={'app-wrapper-content'}>
                     {/*для того чтобы рендерилось только крогда url полностью совпадает*/}
                     <Switch>
                         <Route exact path='/'
                                render={() => <Redirect to={'/profile'}/>}/>
-                        {/*В стрeлочных функциях чтоб рендеровские пропсы не шли в withSuspense*/}
+                        {/*В стрeлочных функциях, чтоб рендеровские пропсы не шли в withSuspense*/}
                         <Route path='/profile/:userId?'
                                render={() => <SuspendedProfile /> }/>
                         <Route path='/dialogs'
@@ -65,7 +65,7 @@ class App extends React.Component<PropsType> {
                         <Route path='/news'
                                render={() => <News/>}/>
                         <Route path='/users'
-                               render={() => <UsersContainer />}/>
+                               render={() => <UsersPage />}/>
                         <Route path='/music'
                                render={() => <Music/>}/>
                         <Route path='/settings'

@@ -3,6 +3,7 @@ import style from './Posts.module.css';
 import Post from "./Post/Post";
 import AddPostReduxForm, { NewPostFormValuesType } from "./AddPostForm/AddPostForm";
 import {MapDispatchPropsType, MapStatePropsType} from "./PostsContainer";
+import AddPostNewForm from "./AddPostForm/AddPostNewForm";
 
 type PropsType = MapStatePropsType & MapDispatchPropsType
 
@@ -16,7 +17,8 @@ const Posts: React.FC<PropsType> = (props) => {
 
     return (
         <div className={style.posts}>
-            <AddPostReduxForm onSubmit={onAddPost}/>
+            <AddPostNewForm addPost={props.addPost}/>
+           {/* <AddPostReduxForm />*/}
             <div>
                 {postsElements}
             </div>

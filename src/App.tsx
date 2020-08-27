@@ -16,10 +16,10 @@ import UsersPage from './components/Users/UsersContainer';
 import withSuspense from "./hoc/withSuspense";
 
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
-const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
+const Dialogs = React.lazy(() => import('./components/Dialogs/DialogsPage'));
 
 const SuspendedProfile = withSuspense(ProfileContainer)
-const SuspendedDialogs = withSuspense(DialogsContainer)
+const SuspendedDialogs = withSuspense(Dialogs)
 
 type MapStatePropsType = {
     initialized: boolean

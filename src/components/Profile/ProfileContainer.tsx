@@ -15,7 +15,6 @@ type MapStatePropsType = {
     profile: ProfileType | null
     status: string
     myId: number | null
-    isAuth: boolean
 }
 
 type MapDispatchPropsType = {
@@ -77,7 +76,6 @@ let mapStateToProps = (state: AppStateType): MapStatePropsType => {
         profile: state.profile.profile,
         status: state.profile.status,
         myId: state.auth.userId,
-        isAuth: state.auth.isAuth
     }
 };
 

@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {requestUsers, FilterType} from '../../Redux/users-reducer';
+import {requestUsers, FilterType, follow, unfollow} from '../../Redux/users-reducer';
 import Users from './Users';
 import Preloader from '../Common/Preloader/Preloader';
 import {
@@ -38,11 +38,11 @@ const UsersPage: React.FC = () => {
         dispatch(requestUsers(1, pageSize, filter))
     }
 
-    const follow = (userId: number) => {
+    const followUser = (userId: number) => {
         dispatch(follow(userId))
     }
 
-    const unfollow = (userId: number) => {
+    const unfollowUser = (userId: number) => {
         dispatch(unfollow(userId))
     }
 
@@ -59,8 +59,8 @@ const UsersPage: React.FC = () => {
             <UsersSearchForm onFilterChanged={onFilterChanged}/>
             {isFetching ? <Preloader/> :
                 <Users users={users}
-                       follow={follow}
-                       unfollow={unfollow}
+                       follow={followUser}
+                       unfollow={unfollowUser}
                        followingInProgress={followingInProgress}
                 />}
             <Paginator totalItemsCount={totalUsersCount}

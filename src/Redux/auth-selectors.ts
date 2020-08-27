@@ -17,3 +17,9 @@ export const getLoginSelector = (state: AppStateType) => {
         state.auth.login
     )
 };
+
+export const getUserIdSelector = (state: AppStateType) => {
+    return(
+        state.auth.userId
+    )
+};

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
 import PostsContainer from "./Posts/PostsContainer";
 import Preloader from "../Common/Preloader/Preloader";
@@ -7,18 +7,14 @@ import {getProfileSelector, getStatusSelector} from "../../Redux/profile-selecto
 import {useDispatch, useSelector} from "react-redux";
 import {getUserIdSelector} from "../../Redux/auth-selectors";
 import {getUserProfile, getUserStatus, savePhoto, saveProfile, updateUserStatus} from "../../Redux/profile-reducer";
+import { useHistory, useParams } from 'react-router-dom';
 
-export type PropsType = {
-    profile: ProfileType | null
-    status: string
-    updateStatus: (status: string) => void
-    isOwner: boolean
-    savePhoto: (photo: File) => void
-    saveProfile: (profile: ProfileType) => Promise<any>
+interface ParamsInterface {
+    userId: string
 }
 
-const Profile: React.FC<PropsType> = (props) => {
-    /*const profile = useSelector(getProfileSelector)
+const Profile: React.FC = (props) => {
+    const profile = useSelector(getProfileSelector)
     const status = useSelector(getStatusSelector)
     const myId = useSelector(getUserIdSelector)
 
@@ -30,23 +26,30 @@ const Profile: React.FC<PropsType> = (props) => {
     const savePhotoDispatch = (photo: File) => dispatch(savePhoto(photo))
     const saveProfileDispatch = (profile: ProfileType) => dispatch(saveProfile(profile))
 
+    let history = useHistory()
+    let params= useParams<ParamsInterface>()
+
     const refreshProfile = () => {
-        let userId: number | null = +this.props.match.params.userId;
+        let userId: number | null = +params.userId;
         if(!userId) {
             userId = myId;
             if(!userId) {
-                props.history.push('/login')
+                history.push('/login')
             }
         }
-        if(!props.userId) {
+        if(!userId) {
             console.error('ID should exist in URL params or in state ("authorizedUserId")')
         } else {
-            getUserProfile(props.userId as number);
-            getUserStatus(props.userId as number)
+            getUserProfileDispatch(userId as number);
+            getUserStatusDispatch(userId as number)
         }
-    }*/
+    }
 
-    if(!props.profile) {
+    useEffect(() => {
+        refreshProfile()
+    }, [params.userId])
+
+    if(!profile) {
         return(
             <Preloader/>
         )
@@ -54,12 +57,12 @@ const Profile: React.FC<PropsType> = (props) => {
 
     return (
         <div>
-            <ProfileInfo profile={props.profile}
-                         status={props.status}
-                         updateStatus={props.updateStatus}
-                         isOwner={props.isOwner}
-                         savePhoto={props.savePhoto}
-                         saveProfile={props.saveProfile}/>
+            <ProfileInfo profile={profile}
+                         status={status}
+                         updateStatus={updateStatus}
+                         isOwner={!params.userId}
+                         savePhoto={savePhotoDispatch}
+                         saveProfile={saveProfileDispatch}/>
             <PostsContainer />
         </div>
     )

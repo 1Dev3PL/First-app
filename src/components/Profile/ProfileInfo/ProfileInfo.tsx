@@ -3,8 +3,16 @@ import style from './ProfileInfo.module.css';
 import userPhoto from '../../../assets/images/userPhoto.png';
 import ProfileStatusWithHooks from "./ProfileStatusWithHooks";
 import ProfileDataForm from "./ProfileDataForm";
-import {PropsType} from "../Profile";
 import {ContactsType, ProfileType} from "../../../types/types";
+
+type PropsType = {
+    profile: ProfileType | null
+    status: string
+    updateStatus: (status: string) => void
+    isOwner: boolean
+    savePhoto: (photo: File) => void
+    saveProfile: (profile: ProfileType) => any
+}
 
 const ProfileInfo: React.FC<PropsType> = ({profile, status, updateStatus, isOwner, savePhoto, saveProfile}) => {
     let [editMode, setEditMode] = useState(false);

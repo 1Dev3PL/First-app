@@ -14,12 +14,15 @@ import Preloader from './components/Common/Preloader/Preloader';
 import store, {AppStateType} from './Redux/redux-store';
 import UsersPage from './components/Users/UsersContainer';
 import withSuspense from "./hoc/withSuspense";
+import withAuthRedirect from "./hoc/withAuthRedirect";
 
-const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
+const ProfileContainer = React.lazy(() => import('./components/Profile/Profile'));
 const Dialogs = React.lazy(() => import('./components/Dialogs/DialogsPage'));
 
 const SuspendedProfile = withSuspense(ProfileContainer)
 const SuspendedDialogs = withSuspense(Dialogs)
+const ProfileWithAuthRedirectHOC = withAuthRedirect(SuspendedProfile)
+const DialogsWithAuthRedirectHOC = withAuthRedirect(SuspendedDialogs)
 
 type MapStatePropsType = {
     initialized: boolean
@@ -59,9 +62,9 @@ class App extends React.Component<PropsType> {
                                render={() => <Redirect to={'/profile'}/>}/>
                         {/*В стрeлочных функциях, чтоб рендеровские пропсы не шли в withSuspense*/}
                         <Route path='/profile/:userId?'
-                               render={() => <SuspendedProfile /> }/>
+                               render={() => <ProfileWithAuthRedirectHOC /> }/>
                         <Route path='/dialogs'
-                               render={() => <SuspendedDialogs />}/>
+                               render={() => <DialogsWithAuthRedirectHOC />}/>
                         <Route path='/news'
                                render={() => <News/>}/>
                         <Route path='/users'

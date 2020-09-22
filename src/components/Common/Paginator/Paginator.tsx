@@ -37,15 +37,9 @@ let Paginator: React.FC<PropsType> = ({
             {portionsCount > 0 &&
             <div>
                 <div className={style.pageNavigationLayer}>
-                    <button onClick={() => {
-                        onPreviousButtonPressed()
-                    }}>Сюда
-                    </button>
+                    {currentPage > 1 ? <button onClick={() => {onPreviousButtonPressed()}}>Сюда</button> : null}
                     <span>Page {currentPage}</span>
-                    <button onClick={() => {
-                        onNextButtonPressed()
-                    }}>Туда
-                    </button>
+                    {currentPage < pagesCount ? <button onClick={() => {onNextButtonPressed()}}>Туда</button> : null}
                 </div>
             </div>}
             <div>

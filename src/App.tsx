@@ -1,11 +1,10 @@
 import React from 'react';
-import {HashRouter, Redirect, Route, Switch, withRouter} from 'react-router-dom';
+import {HashRouter, Link, Redirect, Route, Switch, withRouter} from 'react-router-dom';
 import './App.css';
 import Sidebar from './components/Sidebar/Sidebar';
 import News from './components/News/News';
 import Music from './components/Music/Music';
 import Settings from './components/Settings/Settings';
-import Header from './components/Header/Header';
 import LoginPage from './components/Login/Login';
 import {connect, Provider} from 'react-redux';
 import {compose} from 'redux';
@@ -15,6 +14,11 @@ import store, {AppStateType} from './Redux/redux-store';
 import UsersPage from './components/Users/UsersContainer';
 import withSuspense from "./hoc/withSuspense";
 import withAuthRedirect from "./hoc/withAuthRedirect";
+import {Layout, Menu, Breadcrumb} from 'antd';
+import 'antd/dist/antd.css';
+import HeaderComponent from "./components/Header/Header";
+
+const {Content, Footer, Sider} = Layout;
 
 const ProfileContainer = React.lazy(() => import('./components/Profile/Profile'));
 const Dialogs = React.lazy(() => import('./components/Dialogs/DialogsPage'));
@@ -28,7 +32,7 @@ type MapStatePropsType = {
     initialized: boolean
 }
 type MapDispatchPropsType = {
-    initializeApp:() => void
+    initializeApp: () => void
 }
 type PropsType = MapStatePropsType & MapDispatchPropsType
 
@@ -52,15 +56,15 @@ class App extends React.Component<PropsType> {
         }
 
         return (
-            <div className={'app-wrapper'}>
+            /*<div className={'app-wrapper'}>
                 <Header/>
                 <Sidebar/>
                 <div className={'app-wrapper-content'}>
-                    {/*для того чтобы рендерилось только крогда url полностью совпадает*/}
+                    {/!*для того чтобы рендерилось только крогда url полностью совпадает*!/}
                     <Switch>
                         <Route exact path='/'
                                render={() => <Redirect to={'/profile'}/>}/>
-                        {/*В стрeлочных функциях, чтоб рендеровские пропсы не шли в withSuspense*/}
+                        {/!*В стрeлочных функциях, чтоб рендеровские пропсы не шли в withSuspense*!/}
                         <Route path='/profile/:userId?'
                                render={() => <ProfileWithAuthRedirectHOC /> }/>
                         <Route path='/dialogs'
@@ -79,7 +83,55 @@ class App extends React.Component<PropsType> {
                                render={() => <div>404 NOT FOUND</div>}/>
                     </Switch>
                 </div>
-            </div>
+            </div>*/
+            <Layout>
+                <HeaderComponent/>
+                <Content style={{padding: '0 50px'}}>
+                    <Breadcrumb style={{margin: '16px 0'}}>
+                        <Breadcrumb.Item>Home</Breadcrumb.Item>
+                        <Breadcrumb.Item>List</Breadcrumb.Item>
+                        <Breadcrumb.Item>App</Breadcrumb.Item>
+                    </Breadcrumb>
+                    <Layout className="site-layout-background" style={{padding: '24px 0'}}>
+                        <Sider className="site-layout-background" width={200}>
+                            <Menu mode="inline"
+                                  defaultSelectedKeys={['1']}
+                                  style={{height: '100%'}}>
+                                <Menu.Item key="1"><Link to='/profile'>Profile</Link></Menu.Item>
+                                <Menu.Item key="2"><Link to='/dialogs'>Dialogs</Link></Menu.Item>
+                                <Menu.Item key="3"><Link to='/news'>News</Link></Menu.Item>
+                                <Menu.Item key="4"><Link to='/users'>Users</Link></Menu.Item>
+                                <Menu.Item key="5"><Link to='/music'>Music</Link></Menu.Item>
+                                <Menu.Item key="6"><Link to='/settings'>Settings</Link></Menu.Item>
+                            </Menu>
+                        </Sider>
+                        <Content style={{padding: '0 24px', minHeight: 280}}>
+                            <Switch>
+                                <Route exact path='/'
+                                       render={() => <Redirect to={'/profile'}/>}/>
+                                {/*В стрeлочных функциях, чтоб рендеровские пропсы не шли в withSuspense*/}
+                                <Route path='/profile/:userId?'
+                                       render={() => <ProfileWithAuthRedirectHOC/>}/>
+                                <Route path='/dialogs'
+                                       render={() => <DialogsWithAuthRedirectHOC/>}/>
+                                <Route path='/news'
+                                       render={() => <News/>}/>
+                                <Route path='/users'
+                                       render={() => <UsersPage/>}/>
+                                <Route path='/music'
+                                       render={() => <Music/>}/>
+                                <Route path='/settings'
+                                       render={() => <Settings/>}/>
+                                <Route path='/login'
+                                       render={() => <LoginPage/>}/>
+                                <Route path='*'
+                                       render={() => <div>404 NOT FOUND</div>}/>
+                            </Switch>
+                        </Content>
+                    </Layout>
+                </Content>
+                <Footer style={{textAlign: 'center'}}>Ant Design ©2018 Created by Ant UED</Footer>
+            </Layout>
         )
     }
 }

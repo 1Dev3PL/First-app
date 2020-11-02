@@ -3,25 +3,45 @@ import {useDispatch, useSelector} from "react-redux";
 import {logOut} from "../../Redux/auth-reducer";
 import {getIsAuthSelector, getLoginSelector} from "../../Redux/auth-selectors";
 import style from "./Header.module.css";
-import logo from "../../assets/images/logo.png";
-import {NavLink} from "react-router-dom";
+import logo from "../../assets/images/logo.svg";
+import {Link} from "react-router-dom";
+import {Col, Image, Layout, Button, Avatar, Row} from "antd";
 
-const Header: React.FC = () => {
+const {Header} = Layout;
+
+const HeaderComponent: React.FC = () => {
     const isAuth = useSelector(getIsAuthSelector)
     const login = useSelector(getLoginSelector)
 
     const dispatch = useDispatch()
 
     return (
-        <header className={style.header}>
-            <img src={logo} alt='Jopa' />
-            <div className={style.loginBlock}>
+        <Header className="header">
+            <Row>
+                <Col span={18}>
+                    <Image src={logo} alt='Jopa' width={100} preview={false}/>
+                </Col>
                 {isAuth
-                    ? <div>{login} <button onClick={() => dispatch(logOut())}>Log out</button></div>
-                    : <NavLink to={'/login'} activeClassName={style.activeLink}>Log in</NavLink>}
-            </div>
-        </header>
+                    ? <>
+                        <Col span={1}>
+                            {login}
+                        </Col>
+                        <Col span={2}>
+                            <Avatar>U</Avatar>
+                        </Col>
+                        <Col span={3}>
+                            <Button onClick={() => dispatch(logOut())}>Log out</Button>
+                        </Col>
+                    </>
+                    : <Col span={6}>
+                        <Button>
+                            <Link to={'/login'}>Log in</Link>
+                        </Button>
+                    </Col>
+                }
+            </Row>
+        </Header>
     )
 }
 
-export default Header
+export default HeaderComponent

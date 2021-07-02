@@ -1,39 +1,42 @@
 import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {logOut} from "../../Redux/auth-reducer";
-import {getIsAuthSelector, getLoginSelector} from "../../Redux/auth-selectors";
+import {selectLogin, selectIsAuth} from "../../Redux/auth-selectors";
 import style from "./Header.module.css";
 import logo from "../../assets/images/logo.svg";
 import {Link} from "react-router-dom";
 import {Col, Image, Layout, Button, Avatar, Row} from "antd";
+import {selectProfilePhoto} from "../../Redux/profile-selectors";
+import userPhoto from "../../assets/images/userPhoto.png"
 
 const {Header} = Layout;
 
 const HeaderComponent: React.FC = () => {
-    const isAuth = useSelector(getIsAuthSelector)
-    const login = useSelector(getLoginSelector)
+    const isAuth = useSelector(selectIsAuth)
+    const login = useSelector(selectLogin)
+    const photo = useSelector(selectProfilePhoto)
 
     const dispatch = useDispatch()
 
     return (
         <Header className="header">
-            <Row>
-                <Col span={18}>
-                    <Image src={logo} alt='Jopa' width={100} preview={false}/>
+            <Row align={"middle"}>
+                <Col span={2} className={style.image}>
+                    <Image src={logo} alt='Dev Soc' width={100} preview={false}/>
                 </Col>
                 {isAuth
                     ? <>
+                        <Col span={1} offset={18}>
+                            <span style={{color: 'white'}}>{login}</span>
+                        </Col>
                         <Col span={1}>
-                            {login}
+                            <Avatar src={photo || userPhoto} />
                         </Col>
-                        <Col span={2}>
-                            <Avatar>U</Avatar>
-                        </Col>
-                        <Col span={3}>
+                        <Col span={1} offset={1}>
                             <Button onClick={() => dispatch(logOut())}>Log out</Button>
                         </Col>
                     </>
-                    : <Col span={6}>
+                    : <Col span={1} offset={21}>
                         <Button>
                             <Link to={'/login'}>Log in</Link>
                         </Button>

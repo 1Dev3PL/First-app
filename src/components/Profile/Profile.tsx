@@ -3,9 +3,9 @@ import ProfileInfo from "./ProfileInfo/ProfileInfo";
 import PostsContainer from "./Posts/PostsContainer";
 import Preloader from "../Common/Preloader/Preloader";
 import { ProfileType } from '../../types/types';
-import {getProfileSelector, getStatusSelector} from "../../Redux/profile-selectors";
+import {selectProfile, selectStatus} from "../../Redux/profile-selectors";
 import {useDispatch, useSelector} from "react-redux";
-import {getUserIdSelector} from "../../Redux/auth-selectors";
+import {selectUserId} from "../../Redux/auth-selectors";
 import {getUserProfile, getUserStatus, savePhoto, saveProfile, updateUserStatus} from "../../Redux/profile-reducer";
 import { useHistory, useParams } from 'react-router-dom';
 
@@ -13,10 +13,10 @@ interface ParamsInterface {
     userId: string
 }
 
-const Profile: React.FC = (props) => {
-    const profile = useSelector(getProfileSelector)
-    const status = useSelector(getStatusSelector)
-    const myId = useSelector(getUserIdSelector)
+const Profile: React.FC = () => {
+    const profile = useSelector(selectProfile)
+    const status = useSelector(selectStatus)
+    const myId = useSelector(selectUserId)
 
     const dispatch = useDispatch()
 

@@ -3,8 +3,9 @@
     background-color: #ffe86f;
 }
 
-.header img {
-    margin-top: 4px;
+.image {
+    text-align: center;
+    background-color: white;
 }
 
 .loginBlock {

@@ -1,7 +1,6 @@
 import React from 'react';
 import {HashRouter, Link, Redirect, Route, Switch, withRouter} from 'react-router-dom';
 import './App.css';
-import Sidebar from './components/Sidebar/Sidebar';
 import News from './components/News/News';
 import Music from './components/Music/Music';
 import Settings from './components/Settings/Settings';
@@ -21,11 +20,14 @@ import HeaderComponent from "./components/Header/Header";
 const {Content, Footer, Sider} = Layout;
 
 const ProfileContainer = React.lazy(() => import('./components/Profile/Profile'));
-const Dialogs = React.lazy(() => import('./components/Dialogs/DialogsPage'));
+const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsPage'));
+const ChatContainer = React.lazy(() => import('./pages/chat/ChatPage'));
 
 const SuspendedProfile = withSuspense(ProfileContainer)
-const SuspendedDialogs = withSuspense(Dialogs)
+const SuspendedChat = withSuspense(ChatContainer)
+const SuspendedDialogs = withSuspense(DialogsContainer)
 const ProfileWithAuthRedirectHOC = withAuthRedirect(SuspendedProfile)
+const ChatWithAuthRedirectHOC = withAuthRedirect(SuspendedChat)
 const DialogsWithAuthRedirectHOC = withAuthRedirect(SuspendedDialogs)
 
 type MapStatePropsType = {
@@ -56,56 +58,30 @@ class App extends React.Component<PropsType> {
         }
 
         return (
-            /*<div className={'app-wrapper'}>
-                <Header/>
-                <Sidebar/>
-                <div className={'app-wrapper-content'}>
-                    {/!*для того чтобы рендерилось только крогда url полностью совпадает*!/}
-                    <Switch>
-                        <Route exact path='/'
-                               render={() => <Redirect to={'/profile'}/>}/>
-                        {/!*В стрeлочных функциях, чтоб рендеровские пропсы не шли в withSuspense*!/}
-                        <Route path='/profile/:userId?'
-                               render={() => <ProfileWithAuthRedirectHOC /> }/>
-                        <Route path='/dialogs'
-                               render={() => <DialogsWithAuthRedirectHOC />}/>
-                        <Route path='/news'
-                               render={() => <News/>}/>
-                        <Route path='/users'
-                               render={() => <UsersPage />}/>
-                        <Route path='/music'
-                               render={() => <Music/>}/>
-                        <Route path='/settings'
-                               render={() => <Settings/>}/>
-                        <Route path='/login'
-                               render={() => <LoginPage/>}/>
-                        <Route path='*'
-                               render={() => <div>404 NOT FOUND</div>}/>
-                    </Switch>
-                </div>
-            </div>*/
             <Layout>
                 <HeaderComponent/>
-                <Content style={{padding: '0 50px'}}>
-                    <Breadcrumb style={{margin: '16px 0'}}>
+                <Content style={{padding: '0 30px'}}>
+                    <Breadcrumb style={{marginTop: '16px', padding: '0 30px'}}>
                         <Breadcrumb.Item>Home</Breadcrumb.Item>
                         <Breadcrumb.Item>List</Breadcrumb.Item>
                         <Breadcrumb.Item>App</Breadcrumb.Item>
                     </Breadcrumb>
-                    <Layout className="site-layout-background" style={{padding: '24px 0'}}>
+                    <Layout className="site-layout-background" style={{padding: '16px 0'}}>
                         <Sider className="site-layout-background" width={200}>
                             <Menu mode="inline"
                                   defaultSelectedKeys={['1']}
                                   style={{height: '100%'}}>
                                 <Menu.Item key="1"><Link to='/profile'>Profile</Link></Menu.Item>
                                 <Menu.Item key="2"><Link to='/dialogs'>Dialogs</Link></Menu.Item>
-                                <Menu.Item key="3"><Link to='/news'>News</Link></Menu.Item>
-                                <Menu.Item key="4"><Link to='/users'>Users</Link></Menu.Item>
-                                <Menu.Item key="5"><Link to='/music'>Music</Link></Menu.Item>
-                                <Menu.Item key="6"><Link to='/settings'>Settings</Link></Menu.Item>
+                                <Menu.Item key="3"><Link to='/chat'>Chat</Link></Menu.Item>
+                                <Menu.Item key="4"><Link to='/news'>News</Link></Menu.Item>
+                                <Menu.Item key="5"><Link to='/users'>Users</Link></Menu.Item>
+                                <Menu.Item key="6"><Link to='/music'>Music</Link></Menu.Item>
+                                <Menu.Item key="7"><Link to='/settings'>Settings</Link></Menu.Item>
                             </Menu>
                         </Sider>
                         <Content style={{padding: '0 24px', minHeight: 280}}>
+                            {/*для того чтобы рендерилось только крогда url полностью совпадает*/}
                             <Switch>
                                 <Route exact path='/'
                                        render={() => <Redirect to={'/profile'}/>}/>
@@ -124,13 +100,15 @@ class App extends React.Component<PropsType> {
                                        render={() => <Settings/>}/>
                                 <Route path='/login'
                                        render={() => <LoginPage/>}/>
+                                <Route path='/chat'
+                                       render={() => <ChatWithAuthRedirectHOC/>}/>
                                 <Route path='*'
                                        render={() => <div>404 NOT FOUND</div>}/>
                             </Switch>
                         </Content>
                     </Layout>
                 </Content>
-                <Footer style={{textAlign: 'center'}}>Ant Design ©2018 Created by Ant UED</Footer>
+                <Footer style={{textAlign: 'center'}}>Dev Soc ©2021 Created by 1Dev3PL</Footer>
             </Layout>
         )
     }

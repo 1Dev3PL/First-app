@@ -1,5 +1,4 @@
 import React, {ChangeEvent} from "react";
-import style from './ProfileInfo.module.css';
 
 type PropsType = {
     status: string
@@ -9,6 +8,7 @@ type StateType = {
     editMode: boolean
     status: string
 }
+
 class ProfileStatus extends React.Component<PropsType, StateType> {
     state = {
         editMode: false,

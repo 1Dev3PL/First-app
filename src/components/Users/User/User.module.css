@@ -3,10 +3,10 @@
 }
 
 .item {
-    border: 2px solid #373737;
     margin-bottom: 10px;
     border-radius: 10px;
     padding: 7px;
+    background-color: white;
 }
 
 

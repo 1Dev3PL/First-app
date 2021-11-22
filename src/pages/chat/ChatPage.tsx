@@ -1,15 +1,21 @@
 import React, {useEffect, useState} from "react"
-
-const wsChannel = new WebSocket('wss://social-network.samuraijs.com/handlers/ChatHandler.ashx')
-
-export type ChatMessageType = {
-    message: string
-    photo: string
-    userId: number
-    userName: string
-}
+import userPhoto from "../../assets/images/userPhoto.png";
+import withAuthRedirect from "../../hoc/withAuthRedirect";
+import {ChatMessageType} from "../../types/types";
+import {useDispatch, useSelector} from "react-redux";
+import {sendMessage, startMessagesListening, stopMessagesListening} from "../../Redux/chat-reducer";
+import {selectMessages} from "../../Redux/chat-selectors";
 
 const ChatPage: React.FC = () => {
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(startMessagesListening())
+        return () => {
+            dispatch(stopMessagesListening())
+        }
+    }, [])
+
     return (
         <div>
             <Messages/>
@@ -19,13 +25,7 @@ const ChatPage: React.FC = () => {
 }
 
 const Messages: React.FC = () => {
-    const [messages, setMessages] = useState<ChatMessageType[]>([])
-
-    useEffect( () => {
-        wsChannel.addEventListener('message', (e: MessageEvent) => {
-            setMessages((prevMessages) => [...prevMessages, ...JSON.parse(e.data)])
-        })
-    }, [])
+    const messages = useSelector(selectMessages)
 
     return (
         <div style={{height: '400px', overflowY: 'auto'}}>
@@ -34,11 +34,11 @@ const Messages: React.FC = () => {
     )
 }
 
-const Message: React.FC<{message: ChatMessageType}> = ({message}) => {
+const Message: React.FC<{ message: ChatMessageType }> = ({message}) => {
     return (
         <div>
-            <img src={message.photo} width={50} alt={'ico'}/>
-            <div>{message.userName}</div>
+            <img src={message.photo || userPhoto} width={50} alt={'ico'}/>
+            <h2 style={{display: "inline", marginLeft: '5px'}}>{message.userName}</h2>
             <div>{message.message}</div>
             <hr/>
         </div>
@@ -47,20 +47,25 @@ const Message: React.FC<{message: ChatMessageType}> = ({message}) => {
 
 const ChatForm: React.FC = () => {
     const [message, setMessage] = useState('')
+    const [readyStatus, setReadyStatus] = useState<'pending' | 'ready'>('pending')
 
-    const sendMessage = () => {
-        if(!message) return
+    const dispatch = useDispatch()
 
-        wsChannel.send(message)
+    const sendMessageHandler = () => {
+        if (!message) return
+
+        dispatch(sendMessage(message))
         setMessage('')
     }
 
     return (
         <div>
             <textarea value={message} onChange={(e) => setMessage(e.currentTarget.value)}/>
-            <button onClick={sendMessage}>Send</button>
+            <button disabled={false} onClick={sendMessageHandler}>Send</button>
         </div>
     )
 }
 
-export default ChatPage
+const ChatPageWithAuthRedirect = withAuthRedirect(ChatPage)
+
+export default ChatPageWithAuthRedirect

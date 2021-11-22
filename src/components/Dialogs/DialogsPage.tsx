@@ -5,6 +5,7 @@ import Messages from "./Messages/Messages";
 import {useDispatch, useSelector} from "react-redux";
 import {getFriendsSelector, getMessagesSelector} from "../../Redux/dialogs-selectors";
 import {dialogsActions} from "../../Redux/dialogs-reducer";
+import withAuthRedirect from "../../hoc/withAuthRedirect";
 
 const DialogsPage: React.FC  = () => {
     const friends = useSelector(getFriendsSelector)
@@ -22,4 +23,6 @@ const DialogsPage: React.FC  = () => {
     )
 };
 
-export default DialogsPage;
+const DialogsPageWithAuthRedirect = withAuthRedirect(DialogsPage)
+
+export default DialogsPageWithAuthRedirect;

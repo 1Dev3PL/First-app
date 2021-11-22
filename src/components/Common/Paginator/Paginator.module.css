@@ -10,11 +10,11 @@
 }
 
 .selectedPage {
-    background-color: #ffe86f;
+    background-color: #40a9ff;
     color: black;
     font-weight: bold;
-    border: solid 1px black;
     border-radius: 3px;
+    margin: 3px;
     padding: 2px
 }
 
@@ -30,5 +30,24 @@
 
 .pageNavigationLayer button {
     margin: 2.5px;
+}
+
+.pageSize {
+    margin: 3px;
+    padding: 2px
+}
+
+.pageSize:hover {
+    background-color: gray;
+    border-radius: 3px;
+}
+
+.selectedPageSize {
+    background-color: #40a9ff;
+    color: black;
+    font-weight: bold;
+    border-radius: 3px;
+    margin: 3px;
+    padding: 2px
 }
 

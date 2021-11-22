@@ -13,7 +13,7 @@ let initialState = {
     },
     currentPage: 1,
     totalUsersCount: 0,
-    pageSize: 10,
+    pageSize: 20,
     portionSize: 10,
     isFetching: false,
     followingInProgress: [] as Array<number> //array of userId's
@@ -48,6 +48,11 @@ const usersReducer = (state = initialState, action: ActionsTypes): InitialStateT
             return {
                 ...state,
                 currentPage: action.pageNumber
+            };
+        case 'DS/USERS/CHANGE_PAGE_SIZE':
+            return {
+                ...state,
+                pageSize: action.pageSize
             };
         case 'DS/USERS/SET_USERS':
             return {
@@ -89,6 +94,7 @@ export const usersActions = {
     followSuccess: (userId: number) => ({type: 'DS/USERS/FOLLOW', userId} as const),
     unfollowSuccess: (userId: number) => ({type: 'DS/USERS/UNFOLLOW', userId} as const),
     changePage: (pageNumber: number) => ({type: 'DS/USERS/CHANGE_PAGE', pageNumber} as const),
+    changePageSize: (pageSize: number) => ({type: 'DS/USERS/CHANGE_PAGE_SIZE', pageSize} as const),
     setUsers: (users: Array<UserType>) => ({type: 'DS/USERS/SET_USERS', users} as const),
     setFilter: (filter: FilterType) => ({type: 'DS/USERS/SET_FILTER', payload: filter} as const),
     setTotalUsersCount: (totalCount: number) => ({type: 'DS/USERS/SET_TOTAL_USERS_COUNT', totalCount} as const),
@@ -105,6 +111,7 @@ type ThunkType = BaseThunkType<ActionsTypes>
 export const requestUsers = (page: number, pageSize: number, filter: FilterType): ThunkType => async (dispatch) => {
     dispatch(usersActions.toggleIsFetching(true));
     dispatch(usersActions.changePage(page));
+    dispatch(usersActions.changePageSize(pageSize));
     dispatch(usersActions.setFilter(filter));
 
     let data = await usersAPI.getUsers(page, pageSize, filter.term, filter.friend);

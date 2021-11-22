@@ -2,7 +2,7 @@ import {instance, GetItemsType, APIResponseType} from "./api";
 
 export const usersAPI = {
     getUsers(pageNumber = 1,
-             pageSize = 5,
+             pageSize = 20,
              term = '',
              friend: null | boolean = null) {
         return instance.get<GetItemsType>(

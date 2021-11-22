@@ -6,12 +6,14 @@ import authReducer from './auth-reducer';
 import thunkMiddleWare, {ThunkAction} from 'redux-thunk';
 import {reducer as formReducer} from 'redux-form';
 import appReducer from "./app-reducer";
+import chatReducer from "./chat-reducer";
 
 let rootReducer = combineReducers({
     profile: profileReducer,
     dialogs: dialogsReducer,
     users: usersReducer,
     auth: authReducer,
+    chat: chatReducer,
     form: formReducer,
     app: appReducer
 });

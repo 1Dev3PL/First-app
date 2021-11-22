@@ -9,9 +9,11 @@ type PropsType = {
     onPageChanged: (page: number) => void
     onPreviousButtonPressed: () => void
     onNextButtonPressed: () => void
+    onPageSizeChanged: (pageSize: number) => void
 }
 
 let Paginator: React.FC<PropsType> = ({
+                                          onPageSizeChanged,
                                           totalItemsCount,
                                           pageSize,
                                           portionSize,
@@ -37,9 +39,13 @@ let Paginator: React.FC<PropsType> = ({
             {portionsCount > 0 &&
             <div>
                 <div className={style.pageNavigationLayer}>
-                    {currentPage > 1 ? <button onClick={() => {onPreviousButtonPressed()}}>Сюда</button> : null}
+                    {currentPage > 1 ? <button onClick={() => {
+                        onPreviousButtonPressed()
+                    }}>Сюда</button> : null}
                     <span>Page {currentPage}</span>
-                    {currentPage < pagesCount ? <button onClick={() => {onNextButtonPressed()}}>Туда</button> : null}
+                    {currentPage < pagesCount ? <button onClick={() => {
+                        onNextButtonPressed()
+                    }}>Туда</button> : null}
                 </div>
             </div>}
             <div>
@@ -62,6 +68,20 @@ let Paginator: React.FC<PropsType> = ({
                         setPortionNumber(currentPortion + 1)
                     }}>Next</button>}
                 </div>
+            </div>
+            <div className={style.pageNavigationLayer}>
+                <span className={pageSize === 20 ? style.selectedPageSize : style.pageSize}
+                      onClick={() => {
+                          pageSize !== 20 && onPageSizeChanged(20)
+                      }}>20</span>
+                <span className={pageSize === 50 ? style.selectedPageSize : style.pageSize}
+                      onClick={() => {
+                          pageSize !== 50 && onPageSizeChanged(50)
+                      }}>50</span>
+                <span className={pageSize === 100 ? style.selectedPageSize : style.pageSize}
+                      onClick={() => {
+                          pageSize !== 100 && onPageSizeChanged(100)
+                      }}>100</span>
             </div>
         </div>
     )

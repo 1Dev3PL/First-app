@@ -8,12 +8,13 @@ import {useDispatch, useSelector} from "react-redux";
 import {selectUserId} from "../../Redux/auth-selectors";
 import {getUserProfile, getUserStatus, savePhoto, saveProfile, updateUserStatus} from "../../Redux/profile-reducer";
 import { useHistory, useParams } from 'react-router-dom';
+import withAuthRedirect from "../../hoc/withAuthRedirect";
 
 interface ParamsInterface {
     userId: string
 }
 
-const Profile: React.FC = () => {
+const ProfilePage: React.FC = () => {
     const profile = useSelector(selectProfile)
     const status = useSelector(selectStatus)
     const myId = useSelector(selectUserId)
@@ -68,4 +69,6 @@ const Profile: React.FC = () => {
     )
 };
 
-export default Profile;
+const ProfilePageWithAuthRedirect = withAuthRedirect(ProfilePage)
+
+export default ProfilePageWithAuthRedirect;

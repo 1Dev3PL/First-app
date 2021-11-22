@@ -1,29 +1,23 @@
 import React from 'react';
-import style from './Sidebar.module.css';
-import {NavLink} from 'react-router-dom';
+import {Link} from 'react-router-dom';
+import {Layout, Menu} from "antd";
+
+const {Sider} = Layout;
 
 const Sidebar: React.FC = () => {
     return (
-    <nav className={style.sidebar}>
-        <div className={style.item} >
-            <NavLink to='/profile' activeClassName={style.activeLink}>Profile</NavLink>
-        </div>
-        <div className={style.item}>
-            <NavLink to='/dialogs' activeClassName={style.activeLink}>Dialogs</NavLink>
-        </div>
-        <div className={style.item}>
-            <NavLink to='/news' activeClassName={style.activeLink}>News</NavLink>
-        </div>
-        <div className={style.item}>
-            <NavLink to='/users' activeClassName={style.activeLink}>Users</NavLink>
-        </div>
-        <div className={style.item}>
-            <NavLink to='/music' activeClassName={style.activeLink}>Music</NavLink>
-        </div>
-        <div className={style.item}>
-            <NavLink to='/settings' activeClassName={style.activeLink}>Settings</NavLink>
-        </div>
-    </nav>
+        <Sider className="site-layout-background" width={200}>
+            <Menu mode="inline"
+                  style={{height: '100%'}}>
+                <Menu.Item key="1"><Link to='/profile'>Profile</Link></Menu.Item>
+                <Menu.Item key="2"><Link to='/dialogs'>Dialogs</Link></Menu.Item>
+                <Menu.Item key="3"><Link to='/chat'>Chat</Link></Menu.Item>
+                <Menu.Item key="4"><Link to='/news'>News</Link></Menu.Item>
+                <Menu.Item key="5"><Link to='/users'>Users</Link></Menu.Item>
+                <Menu.Item key="6"><Link to='/music'>Music</Link></Menu.Item>
+                <Menu.Item key="7"><Link to='/settings'>Settings</Link></Menu.Item>
+            </Menu>
+        </Sider>
     )
 };
 

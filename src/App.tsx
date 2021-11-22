@@ -1,10 +1,10 @@
-import React from 'react';
-import {HashRouter, Link, Redirect, Route, Switch, withRouter} from 'react-router-dom';
+import React, {Suspense} from 'react';
+import {HashRouter, Redirect, Route, Switch, withRouter} from 'react-router-dom';
 import './App.css';
-import News from './components/News/News';
-import Music from './components/Music/Music';
+import News from './components/News/NewsPage';
+import Music from './components/Music/MusicPage';
 import Settings from './components/Settings/Settings';
-import LoginPage from './components/Login/Login';
+import LoginPage from './components/Login/LoginPage';
 import {connect, Provider} from 'react-redux';
 import {compose} from 'redux';
 import {initializeApp} from './Redux/app-reducer';
@@ -13,22 +13,24 @@ import store, {AppStateType} from './Redux/redux-store';
 import UsersPage from './components/Users/UsersContainer';
 import withSuspense from "./hoc/withSuspense";
 import withAuthRedirect from "./hoc/withAuthRedirect";
-import {Layout, Menu, Breadcrumb} from 'antd';
+import {Layout, Breadcrumb} from 'antd';
 import 'antd/dist/antd.css';
 import HeaderComponent from "./components/Header/Header";
+import Sidebar from "./components/Sidebar/Sidebar";
 
-const {Content, Footer, Sider} = Layout;
+const {Content, Footer} = Layout;
 
-const ProfileContainer = React.lazy(() => import('./components/Profile/Profile'));
-const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsPage'));
-const ChatContainer = React.lazy(() => import('./pages/chat/ChatPage'));
+const ProfilePage = React.lazy(() => import('./components/Profile/ProfilePage'));
+const DialogsPage = React.lazy(() => import('./components/Dialogs/DialogsPage'));
+const ChatPage = React.lazy(() => import('./pages/chat/ChatPage'));
 
-const SuspendedProfile = withSuspense(ProfileContainer)
-const SuspendedChat = withSuspense(ChatContainer)
-const SuspendedDialogs = withSuspense(DialogsContainer)
-const ProfileWithAuthRedirectHOC = withAuthRedirect(SuspendedProfile)
-const ChatWithAuthRedirectHOC = withAuthRedirect(SuspendedChat)
-const DialogsWithAuthRedirectHOC = withAuthRedirect(SuspendedDialogs)
+/*const SuspendedProfile = withSuspense(ProfileLazy)
+const SuspendedChat = withSuspense(ChatLazy)
+const SuspendedDialogs = withSuspense(DialogsLazy)*/
+
+/*const ProfilePage = withAuthRedirect(SuspendedProfile)
+const ChatPage = withAuthRedirect(SuspendedChat)
+const DialogsPage = withAuthRedirect(SuspendedDialogs)*/
 
 type MapStatePropsType = {
     initialized: boolean
@@ -67,45 +69,35 @@ class App extends React.Component<PropsType> {
                         <Breadcrumb.Item>App</Breadcrumb.Item>
                     </Breadcrumb>
                     <Layout className="site-layout-background" style={{padding: '16px 0'}}>
-                        <Sider className="site-layout-background" width={200}>
-                            <Menu mode="inline"
-                                  defaultSelectedKeys={['1']}
-                                  style={{height: '100%'}}>
-                                <Menu.Item key="1"><Link to='/profile'>Profile</Link></Menu.Item>
-                                <Menu.Item key="2"><Link to='/dialogs'>Dialogs</Link></Menu.Item>
-                                <Menu.Item key="3"><Link to='/chat'>Chat</Link></Menu.Item>
-                                <Menu.Item key="4"><Link to='/news'>News</Link></Menu.Item>
-                                <Menu.Item key="5"><Link to='/users'>Users</Link></Menu.Item>
-                                <Menu.Item key="6"><Link to='/music'>Music</Link></Menu.Item>
-                                <Menu.Item key="7"><Link to='/settings'>Settings</Link></Menu.Item>
-                            </Menu>
-                        </Sider>
-                        <Content style={{padding: '0 24px', minHeight: 280}}>
-                            {/*для того чтобы рендерилось только крогда url полностью совпадает*/}
-                            <Switch>
-                                <Route exact path='/'
-                                       render={() => <Redirect to={'/profile'}/>}/>
-                                {/*В стрeлочных функциях, чтоб рендеровские пропсы не шли в withSuspense*/}
-                                <Route path='/profile/:userId?'
-                                       render={() => <ProfileWithAuthRedirectHOC/>}/>
-                                <Route path='/dialogs'
-                                       render={() => <DialogsWithAuthRedirectHOC/>}/>
-                                <Route path='/news'
-                                       render={() => <News/>}/>
-                                <Route path='/users'
-                                       render={() => <UsersPage/>}/>
-                                <Route path='/music'
-                                       render={() => <Music/>}/>
-                                <Route path='/settings'
-                                       render={() => <Settings/>}/>
-                                <Route path='/login'
-                                       render={() => <LoginPage/>}/>
-                                <Route path='/chat'
-                                       render={() => <ChatWithAuthRedirectHOC/>}/>
-                                <Route path='*'
-                                       render={() => <div>404 NOT FOUND</div>}/>
-                            </Switch>
-                        </Content>
+                        <Sidebar/>
+                        <Suspense fallback={<Preloader/>}>
+                            <Content style={{padding: '0 24px', minHeight: 280}}>
+                                {/*для того чтобы рендерилось только крогда url полностью совпадает*/}
+                                <Switch>
+                                    <Route exact path='/'
+                                           render={() => <Redirect to={'/profile'}/>}/>
+                                    {/*В стрeлочных функциях, чтоб рендеровские пропсы не шли в withSuspense*/}
+                                    <Route path='/profile/:userId?'
+                                           render={() => <ProfilePage/>}/>
+                                    <Route path='/dialogs'
+                                           render={() => <DialogsPage/>}/>
+                                    <Route path='/news'
+                                           render={() => <News/>}/>
+                                    <Route path='/users'
+                                           render={() => <UsersPage/>}/>
+                                    <Route path='/music'
+                                           render={() => <Music/>}/>
+                                    <Route path='/settings'
+                                           render={() => <Settings/>}/>
+                                    <Route path='/login'
+                                           render={() => <LoginPage/>}/>
+                                    <Route path='/chat'
+                                           render={() => <ChatPage/>}/>
+                                    <Route path='*'
+                                           render={() => <div>404 NOT FOUND</div>}/>
+                                </Switch>
+                            </Content>
+                        </Suspense>
                     </Layout>
                 </Content>
                 <Footer style={{textAlign: 'center'}}>Dev Soc ©2021 Created by 1Dev3PL</Footer>

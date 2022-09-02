@@ -1,31 +1,46 @@
-import {InjectedFormProps, reduxForm} from "redux-form";
-import {createField, Textarea} from "../../../Common/FormsControls/FormsControls";
-import {maxLengthCreator, required} from "../../../../utils/validators/validators";
-import style from "../Posts.module.css";
+import {ErrorMessage, Field, Form, Formik, FormikHelpers} from "formik";
 import React from "react";
 
-const maxLength50 = maxLengthCreator(50);
-
-export type NewPostFormValuesType = {
+type PropsType = {
+    addPost: (postText: string) => void
+}
+type FormType = {
     postText: string
 }
-type NewPostFormValuesKeysType = Extract<keyof NewPostFormValuesType, string>
-type PropsType = {}
 
-const AddPostForm: React.FC<InjectedFormProps<NewPostFormValuesType, PropsType> & PropsType> = (props) => {
+const PostFieldValidate = (value: any) => {
+    let error;
+    if (!value) {
+        error = 'Required';
+    } else if (value.length > 100) {
+        error = 'Max length is 100 symbols';
+    }
+    return error;
+}
+
+let AddPostForm: React.FC<PropsType> = React.memo((props) => {
+    const submit = (values: FormType, { setSubmitting }: FormikHelpers<FormType>) => {
+        props.addPost(values.postText)
+        setSubmitting(false)
+    }
+
     return (
-        <form onSubmit={props.handleSubmit}>
-            <div>
-                {createField<NewPostFormValuesKeysType>
-                ('Write post', 'postText', Textarea, [required, maxLength50])}
-            </div>
-            <div>
-                <button className={style.addPostButton}>Add Post</button>
-            </div>
-        </form>
+        <div>
+            <Formik
+                initialValues={{postText: ''}}
+                onSubmit={submit}>
+                {({ isSubmitting}) => (
+                    <Form>
+                        <Field type="text" name="postText" placeholder={"Write post"} validate={PostFieldValidate}/>
+                        <ErrorMessage name={"postText"}/>
+                        <button type="submit" disabled={isSubmitting}>
+                            Add Post
+                        </button>
+                    </Form>
+                )}
+            </Formik>
+        </div>
     )
-};
+})
 
-const AddPostReduxForm = reduxForm<NewPostFormValuesType, PropsType>({form: 'addPost'})(AddPostForm);
-
-export default AddPostReduxForm
+export default AddPostForm

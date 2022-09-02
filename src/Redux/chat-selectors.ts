@@ -5,3 +5,8 @@ export const selectMessages = (state: AppStateType) => {
         state.chat.messages
     )
 };
+export const selectStatus = (state: AppStateType) => {
+    return(
+        state.chat.status
+    )
+};

@@ -12,7 +12,7 @@
     "@types/react-router-dom": "^5.1.6",
     "@types/redux-form": "^8.3.0",
     "antd": "^4.7.3",
-    "axios": "^0.19.2",
+    "axios": "^0.27.2",
     "colorette": "^1.2.1",
     "formik": "^2.2.1",
     "react": "^16.14.0",
@@ -24,7 +24,8 @@
     "redux-form": "^8.3.6",
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
-    "typescript": "^3.9.7"
+    "typescript": "^3.9.7",
+    "uuid": "^8.3.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -51,6 +52,7 @@
   },
   "devDependencies": {
     "@types/react-test-renderer": "^16.9.3",
+    "@types/uuid": "^8.3.4",
     "gh-pages": "^2.2.0",
     "react-test-renderer": "^16.14.0"
   }

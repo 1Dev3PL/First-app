@@ -1,13 +1,15 @@
-import React, {useEffect, useState} from "react"
+import React, {useEffect, useRef, useState} from "react"
 import userPhoto from "../../assets/images/userPhoto.png";
 import withAuthRedirect from "../../hoc/withAuthRedirect";
-import {ChatMessageType} from "../../types/types";
 import {useDispatch, useSelector} from "react-redux";
 import {sendMessage, startMessagesListening, stopMessagesListening} from "../../Redux/chat-reducer";
-import {selectMessages} from "../../Redux/chat-selectors";
+import {selectMessages, selectStatus} from "../../Redux/chat-selectors";
+import {ChatMessageAPIType} from "../../api/chat-api";
 
 const ChatPage: React.FC = () => {
     const dispatch = useDispatch()
+
+    const status = useSelector(selectStatus)
 
     useEffect(() => {
         dispatch(startMessagesListening())
@@ -18,6 +20,7 @@ const ChatPage: React.FC = () => {
 
     return (
         <div>
+            {status === 'error' && <div style={{color: "red"}}>Some error occured!</div>}
             <Messages/>
             <ChatForm/>
         </div>
@@ -26,15 +29,34 @@ const ChatPage: React.FC = () => {
 
 const Messages: React.FC = () => {
     const messages = useSelector(selectMessages)
+    const messagesAnchorRef = useRef<HTMLDivElement>(null)
+    const [autoScroll, setAutoScroll] = useState(true)
+
+    const scrollHandler = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
+        const element = e.currentTarget;
+        if ((Math.abs(element.scrollHeight - element.scrollTop) - element.clientHeight) < 300)
+        {
+            !autoScroll && setAutoScroll(true)
+        } else  {
+            autoScroll && setAutoScroll(false)
+        }
+    }
+
+    useEffect(() => {
+        if(autoScroll) {
+            messagesAnchorRef.current?.scrollIntoView({behavior: "smooth"})
+        }
+    }, [messages])
 
     return (
-        <div style={{height: '400px', overflowY: 'auto'}}>
-            {messages.map((m, index) => <Message message={m} key={index}/>)}
+        <div style={{height: '400px', overflowY: 'auto'}} onScroll={scrollHandler}>
+            {messages.map((m) => <Message message={m} key={m.id}/>)}
+            <div ref={messagesAnchorRef}/>
         </div>
     )
 }
 
-const Message: React.FC<{ message: ChatMessageType }> = ({message}) => {
+const Message: React.FC<{ message: ChatMessageAPIType }> = React.memo(({message}) => {
     return (
         <div>
             <img src={message.photo || userPhoto} width={50} alt={'ico'}/>
@@ -43,13 +65,14 @@ const Message: React.FC<{ message: ChatMessageType }> = ({message}) => {
             <hr/>
         </div>
     )
-}
+})
 
 const ChatForm: React.FC = () => {
     const [message, setMessage] = useState('')
-    const [readyStatus, setReadyStatus] = useState<'pending' | 'ready'>('pending')
 
     const dispatch = useDispatch()
+
+    const status = useSelector(selectStatus)
 
     const sendMessageHandler = () => {
         if (!message) return
@@ -60,8 +83,12 @@ const ChatForm: React.FC = () => {
 
     return (
         <div>
-            <textarea value={message} onChange={(e) => setMessage(e.currentTarget.value)}/>
-            <button disabled={false} onClick={sendMessageHandler}>Send</button>
+            <div>
+                <textarea value={message} onChange={(e) => setMessage(e.currentTarget.value)}/>
+            </div>
+            <div>
+                <button disabled={status !== 'ready'} onClick={sendMessageHandler}>Send</button>
+            </div>
         </div>
     )
 }
